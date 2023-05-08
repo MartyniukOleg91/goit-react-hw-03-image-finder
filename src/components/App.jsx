@@ -40,7 +40,6 @@ export class App extends Component {
 
         this.setState({
           images: [...this.state.images, ...response],
-          pageNr: this.state.pageNr + 1,
         });
       } catch (error) {
         this.setState({ error: 'wrong' });
@@ -51,14 +50,7 @@ export class App extends Component {
   }
 
   handleClickMore = async () => {
-    const response = await fetchImages(
-      this.state.currentSearch,
-      this.state.pageNr + 1
-    );
-    this.setState({
-      images: [...this.state.images, ...response],
-      pageNr: this.state.pageNr + 1,
-    });
+    this.setState(prevState => ({ pageNr: prevState.pageNr + 1 }));
   };
 
   handleImageClick = e => {
