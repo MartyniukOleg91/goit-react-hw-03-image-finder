@@ -5,7 +5,6 @@ import { Component } from 'react';
 export class Modal extends Component {
   handleKeyDown = event => {
     if (event.code === 'Escape') {
-      console.log(258);
       this.props.handleClose();
     }
   };
