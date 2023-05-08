@@ -1,16 +1,19 @@
 import css from './Modal.module.css';
 import propTypes from 'prop-types';
+import { Component } from 'react';
 
-export const Modal = ({ src, alt, handleClose }) => {
-  console.log(258);
-  return (
-    <div className={css.Overlay} onClick={handleClose}>
-      <div className={css.Modal}>
-        <img src={src} alt={alt} />
+export class Modal extends Component {
+  state = {};
+  render() {
+    return (
+      <div className={css.Overlay} onClick={this.props.handleClose}>
+        <div className={css.Modal}>
+          <img src={this.props.src} alt={this.props.alt} />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 Modal.propTypes = {
   src: propTypes.string.isRequired,
