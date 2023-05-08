@@ -16,23 +16,39 @@ export class App extends Component {
     modalOpen: false,
     modalImg: '',
     modalAlt: '',
+    error: '',
   };
 
-  handleSubmit = async e => {
-    e.preventDefault();
-    this.setState({ isLoading: true });
-    const inputForSearch = e.target.elements.inputForSearch;
-    if (inputForSearch.value.trim() === '') {
-      return;
-    }
-    const response = await fetchImages(inputForSearch.value, 1);
+  handleSubmit = query => {
     this.setState({
-      images: response,
-      isLoading: false,
-      currentSearch: inputForSearch.value,
+      images: [],
+      currentSearch: query,
       pageNr: 1,
     });
   };
+
+  async componentDidUpdate(_, prevState) {
+    const { currentSearch, pageNr } = this.state;
+
+    if (
+      currentSearch !== prevState.currentSearch ||
+      pageNr !== prevState.pageNr
+    ) {
+      this.setState({ isLoading: true });
+      try {
+        const response = await fetchImages(currentSearch, pageNr);
+
+        this.setState({
+          images: [...this.state.images, ...response],
+          pageNr: this.state.pageNr + 1,
+        });
+      } catch (error) {
+        this.setState({ error: 'wrong' });
+      } finally {
+        this.setState({ isLoading: false });
+      }
+    }
+  }
 
   handleClickMore = async () => {
     const response = await fetchImages(
